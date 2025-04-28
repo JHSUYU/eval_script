@@ -1,0 +1,65 @@
+<configuration>
+    <property>
+        <name>hbase.master.hostname.0</name>
+        <value>node3</value>
+    </property>
+    <property>
+        <name>hbase.master.hostname.1</name>
+        <value>node4</value>
+    </property>
+    <property>
+        <name>hbase.master.hostname.2</name>
+        <value>node5</value>
+    </property>
+    <property>
+        <name>hbase.zookeeper.quorum</name>
+        <value>node3, node4, node5</value>
+        <description>The directory shared by RegionServers.
+        </description>
+    </property>
+    <property>
+        <name>hbase.zookeeper.property.dataDir</name>
+        <value>/opt/zookeeper/data</value>
+        <description>Property from ZooKeeper config zoo.cfg.
+            The directory where the snapshot is stored.
+        </description>
+    </property>
+    <property>
+        <name>zookeeper.znode.parent</name>
+        <value>/hbase-a</value>
+        <description>The root ZNode for HBase in ZooKeeper for Cluster A.</description>
+    </property>
+    <property>
+        <name>hbase.zookeeper.property.clientPort</name>
+        <value>2181</value>
+        <description>Property from ZooKeeper's config zoo.cfg.
+            The port at which the clients will connect.
+        </description>
+    </property>
+    <property>
+        <name>hbase.rootdir</name>
+        <value>hdfs://node3:9000/hbase</value>
+        <description>The directory shared by RegionServers.
+        </description>
+    </property>
+    <property>
+        <name>hbase.cluster.distributed</name>
+        <value>true</value>
+        <description>The mode the cluster will be in. Possible values are
+            false: standalone and pseudo-distributed setups with managed ZooKeeper
+            true: fully-distributed with unmanaged ZooKeeper Quorum (see hbase-env.sh)
+        </description>
+    </property>
+    <property>
+        <name>hbase.replication</name>
+        <value>true</value>
+    </property>
+    <property>
+        <name>hbase.wal.provider</name>
+        <value>filesystem</value>
+    </property>
+    <property>
+        <name>hbase.cluster.id</name>
+        <value>masterClusterId</value>
+    </property>
+</configuration>
