@@ -3,9 +3,9 @@
 USER="ZhenyuLi"
 # TODO: Replace the parameter
 HOSTS=(
-  "ms1145.utah.cloudlab.us"
-  "ms1125.utah.cloudlab.us"
-  "ms1141.utah.cloudlab.us"
+  "ms1328.utah.cloudlab.us"
+  "ms1340.utah.cloudlab.us"
+  "ms1325.utah.cloudlab.us"
 )
 # Define the node names as parameters
 # TODO: Replace the parameter

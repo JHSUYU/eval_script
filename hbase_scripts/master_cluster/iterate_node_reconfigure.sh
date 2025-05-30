@@ -3,9 +3,9 @@
 # 定义变量
 USER="ZhenyuLi"
 HOSTS=(
-  "ms1145.utah.cloudlab.us"
-  "ms1125.utah.cloudlab.us"
-  "ms1141.utah.cloudlab.us"
+  "ms1328.utah.cloudlab.us"
+  "ms1340.utah.cloudlab.us"
+  "ms1325.utah.cloudlab.us"
 )
 SCRIPT_PATH="/opt/hbase_scripts/reconfigure_hbase.sh"
 REGIONSERVERS_PATH="/opt/hbase/conf/regionservers"
