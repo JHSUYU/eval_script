@@ -2,10 +2,9 @@
 
 # 在这里定义您的服务器列表
 SERVERS=(
-    "ZhenyuLi@ms1328.utah.cloudlab.us"
-    "ZhenyuLi@ms1340.utah.cloudlab.us"
-    "ZhenyuLi@ms1325.utah.cloudlab.us"
-    "ZhenyuLi@ms1327.utah.cloudlab.us"
+    "ZhenyuLi@ms1108.utah.cloudlab.us"
+    "ZhenyuLi@ms1145.utah.cloudlab.us"
+    "ZhenyuLi@ms1125.utah.cloudlab.us"
 )
 
 # 在每个服务器上生成SSH密钥
@@ -22,14 +21,23 @@ for server in "${SERVERS[@]}"; do
         # 确保.ssh目录存在
         mkdir -p ~/.ssh
 
-        # 生成密钥
-        ssh-keygen -t rsa -P "" -f ~/.ssh/id_rsa
+        # 生成传统PEM格式的密钥（兼容Hadoop JSch库）
+        ssh-keygen -t rsa -b 2048 -m PEM -P "" -f ~/.ssh/id_rsa
+
+        # 验证密钥格式
+        if head -n 1 ~/.ssh/id_rsa | grep -q "BEGIN RSA PRIVATE KEY"; then
+            echo "✓ 成功生成PEM格式私钥"
+        else
+            echo "⚠ 警告：可能未生成PEM格式私钥"
+        fi
 
         # 添加到authorized_keys
         cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 
         # 设置权限
         chmod 700 ~/.ssh
+        chmod 600 ~/.ssh/id_rsa
+        chmod 644 ~/.ssh/id_rsa.pub
         chmod 600 ~/.ssh/authorized_keys
 
         echo "SSH密钥已在$(hostname)上设置完成"
@@ -58,14 +66,37 @@ done
 # 清理临时文件
 rm -rf ./temp_keys
 
+echo "=== 验证密钥格式 ==="
+for server in "${SERVERS[@]}"; do
+    echo "检查 $server 的私钥格式..."
+    ssh "$server" '
+        if head -n 1 ~/.ssh/id_rsa | grep -q "BEGIN RSA PRIVATE KEY"; then
+            echo "✓ $(hostname): PEM格式正确"
+        elif head -n 1 ~/.ssh/id_rsa | grep -q "BEGIN OPENSSH PRIVATE KEY"; then
+            echo "⚠ $(hostname): OpenSSH格式，需要转换"
+            echo "正在转换为PEM格式..."
+            ssh-keygen -p -m PEM -f ~/.ssh/id_rsa -P "" -N ""
+            if head -n 1 ~/.ssh/id_rsa | grep -q "BEGIN RSA PRIVATE KEY"; then
+                echo "✓ $(hostname): 转换成功"
+            else
+                echo "✗ $(hostname): 转换失败"
+            fi
+        else
+            echo "✗ $(hostname): 未知格式"
+        fi
+    '
+done
+
 echo "=== 测试SSH连接 ==="
 for source in "${SERVERS[@]}"; do
     for target in "${SERVERS[@]}"; do
         if [ "$source" != "$target" ]; then
             echo "测试从 $source 到 $target 的SSH连接..."
-            ssh "$source" "ssh -o StrictHostKeyChecking=no -o BatchMode=yes $target 'echo SSH 连接成功'"
+            if ssh "$source" "ssh -o StrictHostKeyChecking=no -o BatchMode=yes $target 'echo SSH 连接成功'" 2>/dev/null; then
+                echo "✓ $source -> $target: 连接成功"
+            else
+                echo "✗ $source -> $target: 连接失败"
+            fi
         fi
     done
 done
-
-echo "=== 所有服务器之间的SSH无密码访问设置完成 ==="

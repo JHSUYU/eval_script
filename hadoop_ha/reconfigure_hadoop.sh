@@ -10,9 +10,9 @@ NODE_Y="node1"
 NODE_Z="node2"
 
 # Unpack Hadoop to installation directory
-tar -xzf ${INSTALL_DIR}/hadoop-2.6.0.tar.gz -C ${INSTALL_DIR}
+tar -xzf ${INSTALL_DIR}/hadoop-2.9.0.tar.gz -C ${INSTALL_DIR}
 rm -rf ${OPT}/hadoop
-mv ${INSTALL_DIR}/hadoop-2.6.0 ${OPT}/hadoop
+mv ${INSTALL_DIR}/hadoop-2.9.0 ${OPT}/hadoop
 
 # Update core-site.xml with HA configuration
 cat > ${OPT}/hadoop/etc/hadoop/core-site.xml << EOF
@@ -123,8 +123,8 @@ cat > ${OPT}/hadoop/etc/hadoop/hdfs-site.xml << EOF
     </property>
 
     <property>
-            <name>dfs.ha.fencing.ssh.private-key-files</name>
-            <value>/users/ZhenyuLi/.ssh/id_rsa</value>
+        <name>dfs.ha.fencing.ssh.private-key-files</name>
+        <value>/home/hadoop/.ssh/id_rsa</value>
     </property>
 
     <!-- NameNode 数据目录 -->

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<configuration>
+    <property>
+        <name>dfs.replication</name>
+        <value>3</value>
+    </property>
+    <property>
+        <name>dfs.namenode.name.dir</name>
+        <value>/opt/hadoop/hdfs/name</value>
+    </property>
+    <property>
+        <name>dfs.datanode.data.dir</name>
+        <value>/opt/hadoop/hdfs/data</value>
+    </property>
+    <property>
+        <name>dfs.webhdfs.enabled</name>
+        <value>true</value>
+    </property>
+    <property>
+        <name>dfs.permissions.enabled</name>
+        <value>false</value>
+    </property>
+    <!-- TODO:Change the Parameter -->
+    <property>
+        <name>dfs.namenode.http-address</name>
+        <value>node0:9870</value>
+    </property>
+    <!-- TODO:Change the Parameter -->
+    <property>
+        <name>dfs.namenode.rpc-address</name>
+        <value>node0:9000</value>
+    </property>
+    <!-- TODO:Change the Parameter -->
+    <property>
+        <name>dfs.namenode.secondary.http-address</name>
+        <value>node1:9870</value>
+    </property>
+    <!-- TODO:Change the Parameter -->
+    <property>
+        <name>dfs.namenode.secondary.rpc-address</name>
+        <value>node1:9000</value>
+    </property>
+</configuration>

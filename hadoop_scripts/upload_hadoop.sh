@@ -8,12 +8,12 @@ DEST_DIR="/opt"
 
 # TODO: Change the Parameter
 SERVERS=(
-  "ms1328"
-  "ms1340"
-  "ms1325"
+  "ms1108"
+  "ms1145"
+  "ms1125"
 )
 
-HBASE_TARGET_DIR="/Users/lizhenyu/Desktop/eval_script/YARN-7382/hadoop_scripts/hadoop-2.9.0.tar.gz"
+HBASE_TARGET_DIR="/Users/lizhenyu/Desktop/AutoPilotEval/hadoop-2.6.0-10320/hadoop-dist/target/hadoop-2.6.0.tar.gz"
 
 # 上传整个SOURCE_DIR文件夹到所有服务器
 for SERVER in "${SERVERS[@]}"; do
