@@ -10,133 +10,81 @@ NODE_Y="node1"
 NODE_Z="node2"
 
 # Unpack Hadoop to installation directory
-tar -xzf ${INSTALL_DIR}/hadoop-2.6.0.tar.gz -C ${INSTALL_DIR}
+tar -xzf ${INSTALL_DIR}/hadoop-2.7.0-SNAPSHOT.tar.gz -C ${INSTALL_DIR}
 rm -rf ${OPT}/hadoop
-mv ${INSTALL_DIR}/hadoop-2.6.0 ${OPT}/hadoop
+mv ${INSTALL_DIR}/hadoop-2.7.0-SNAPSHOT ${OPT}/hadoop
 
-# Update core-site.xml with HA configuration
+# Update core-site.xml with node parameters
 cat > ${OPT}/hadoop/etc/hadoop/core-site.xml << EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 <configuration>
-    <!-- 使用 HA 集群名称替代单个 NameNode -->
     <property>
         <name>fs.defaultFS</name>
-        <value>hdfs://mycluster</value>
+        <value>hdfs://${NODE_X}:9000</value>
     </property>
-
     <property>
         <name>hadoop.tmp.dir</name>
         <value>/opt/hadoop/tmp</value>
     </property>
-
-    <!-- ZooKeeper 配置 -->
     <property>
-        <name>ha.zookeeper.quorum</name>
-        <value>${NODE_X}:2181,${NODE_Y}:2181,${NODE_Z}:2181</value>
+        <name>net.topology.script.file.name</name>
+        <value>/opt/hadoop_scripts/rack-topology.sh</value>
     </property>
 </configuration>
 EOF
 
-# Update hdfs-site.xml with HA configuration
+# Update hdfs-site.xml with node parameters
 cat > ${OPT}/hadoop/etc/hadoop/hdfs-site.xml << EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 <configuration>
     <property>
         <name>dfs.replication</name>
-        <value>3</value>
+        <value>2</value>
     </property>
-
-    <property>
-        <name>dfs.webhdfs.enabled</name>
-        <value>true</value>
-    </property>
-
-    <property>
-        <name>dfs.permissions.enabled</name>
-        <value>false</value>
-    </property>
-
-    <!-- HA 配置 -->
-    <property>
-        <name>dfs.nameservices</name>
-        <value>mycluster</value>
-    </property>
-
-    <!-- 配置 NameNode ID -->
-    <property>
-        <name>dfs.ha.namenodes.mycluster</name>
-        <value>nn1,nn2</value>
-    </property>
-
-    <!-- NameNode RPC 地址 -->
-    <property>
-        <name>dfs.namenode.rpc-address.mycluster.nn1</name>
-        <value>${NODE_X}:9000</value>
-    </property>
-
-    <property>
-        <name>dfs.namenode.rpc-address.mycluster.nn2</name>
-        <value>${NODE_Y}:9000</value>
-    </property>
-
-    <!-- NameNode HTTP 地址 -->
-    <property>
-        <name>dfs.namenode.http-address.mycluster.nn1</name>
-        <value>${NODE_X}:9870</value>
-    </property>
-
-    <property>
-        <name>dfs.namenode.http-address.mycluster.nn2</name>
-        <value>${NODE_Y}:9870</value>
-    </property>
-
-    <!-- Journal Node 配置 -->
-    <property>
-        <name>dfs.namenode.shared.edits.dir</name>
-        <value>qjournal://${NODE_X}:8485;${NODE_Y}:8485;${NODE_Z}:8485/mycluster</value>
-    </property>
-
-    <!-- Journal Node 数据目录 -->
-    <property>
-        <name>dfs.journalnode.edits.dir</name>
-        <value>/opt/hadoop/journalnode</value>
-    </property>
-
-    <!-- 客户端故障转移配置 -->
-    <property>
-        <name>dfs.client.failover.proxy.provider.mycluster</name>
-        <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
-    </property>
-
-    <!-- 自动故障转移 -->
-    <property>
-        <name>dfs.ha.automatic-failover.enabled</name>
-        <value>true</value>
-    </property>
-
-    <!-- Fencing 配置 -->
-    <property>
-        <name>dfs.ha.fencing.methods</name>
-        <value>sshfence</value>
-    </property>
-
-    <property>
-            <name>dfs.ha.fencing.ssh.private-key-files</name>
-            <value>/users/ZhenyuLi/.ssh/id_rsa</value>
-    </property>
-
-    <!-- NameNode 数据目录 -->
     <property>
         <name>dfs.namenode.name.dir</name>
         <value>/opt/hadoop/hdfs/name</value>
     </property>
-
-    <!-- DataNode 数据目录 -->
     <property>
         <name>dfs.datanode.data.dir</name>
         <value>/opt/hadoop/hdfs/data</value>
+    </property>
+    <property>
+        <name>dfs.webhdfs.enabled</name>
+        <value>true</value>
+    </property>
+    <property>
+        <name>dfs.permissions.enabled</name>
+        <value>false</value>
+    </property>
+    <property>
+        <name>dfs.namenode.http-address</name>
+        <value>${NODE_X}:9870</value>
+    </property>
+    <property>
+        <name>dfs.namenode.rpc-address</name>
+        <value>${NODE_X}:9000</value>
+    </property>
+    <property>
+        <name>dfs.namenode.secondary.http-address</name>
+        <value>${NODE_Y}:9870</value>
+    </property>
+    <property>
+        <name>dfs.namenode.secondary.rpc-address</name>
+        <value>${NODE_Y}:9000</value>
+    </property>
+    <property>
+        <name>dfs.heartbeat.interval</name>
+        <value>1</value>
+        <description>心跳间隔改为1秒</description>
+    </property>
+
+    <property>
+        <name>dfs.namenode.heartbeat.recheck-interval</name>
+        <value>5000</value>
+        <description>检查间隔改为30秒</description>
     </property>
 </configuration>
 EOF
@@ -299,9 +247,7 @@ cp ${INSTALL_DIR}/hadoop-env.sh ${OPT}/hadoop/etc/hadoop/hadoop-env.sh
 rm -rf /opt/hadoop/tmp
 rm -rf /opt/hadoop/hdfs/name
 rm -rf /opt/hadoop/hdfs/data
-rm -rf /opt/hadoop/journalnode
 
 mkdir -p /opt/hadoop/tmp
 mkdir -p /opt/hadoop/hdfs/name
 mkdir -p /opt/hadoop/hdfs/data
-mkdir -p /opt/hadoop/journalnode
