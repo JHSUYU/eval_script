@@ -10,9 +10,9 @@ NODE_Y="node1"
 NODE_Z="node2"
 
 # Unpack Hadoop to installation directory
-tar -xzf ${INSTALL_DIR}/hadoop-2.7.0-SNAPSHOT.tar.gz -C ${INSTALL_DIR}
+tar -xzf ${INSTALL_DIR}/hadoop-2.8.0-SNAPSHOT.tar.gz -C ${INSTALL_DIR}
 rm -rf ${OPT}/hadoop
-mv ${INSTALL_DIR}/hadoop-2.7.0-SNAPSHOT ${OPT}/hadoop
+mv ${INSTALL_DIR}/hadoop-2.8.0-SNAPSHOT ${OPT}/hadoop
 
 # Update core-site.xml with node parameters
 cat > ${OPT}/hadoop/etc/hadoop/core-site.xml << EOF
@@ -27,10 +27,6 @@ cat > ${OPT}/hadoop/etc/hadoop/core-site.xml << EOF
         <name>hadoop.tmp.dir</name>
         <value>/opt/hadoop/tmp</value>
     </property>
-    <property>
-        <name>net.topology.script.file.name</name>
-        <value>/opt/hadoop_scripts/rack-topology.sh</value>
-    </property>
 </configuration>
 EOF
 
@@ -41,7 +37,7 @@ cat > ${OPT}/hadoop/etc/hadoop/hdfs-site.xml << EOF
 <configuration>
     <property>
         <name>dfs.replication</name>
-        <value>2</value>
+        <value>3</value>
     </property>
     <property>
         <name>dfs.namenode.name.dir</name>
@@ -85,6 +81,11 @@ cat > ${OPT}/hadoop/etc/hadoop/hdfs-site.xml << EOF
         <name>dfs.namenode.heartbeat.recheck-interval</name>
         <value>5000</value>
         <description>检查间隔改为30秒</description>
+    </property>
+
+    <property>
+      <name>dfs.namenode.replication.interval</name>
+      <value>180</value>  <!-- 1秒检查一次，更快检测 -->
     </property>
 </configuration>
 EOF

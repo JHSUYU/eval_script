@@ -7,10 +7,11 @@ DEST_DIR="/opt"
 
 # Define server list
 SERVERS=(
-  "ms1018"
-  "ms1023"
-  "ms1033"
-  "ms1022"
+  "ms0805"
+  "ms0832"
+  "ms0828"
+  "ms0822"
+  "ms0820"
 )
 
 ZOOKEEPER_TARGET_DIR="/Users/lizhenyu/Desktop/eval_script/HBASE-25898/zookeeper.tar.gz"

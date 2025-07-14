@@ -7,7 +7,7 @@ HDFS_CMD="$HADOOP_HOME/bin/hdfs"
 HADOOP_CMD="$HADOOP_HOME/bin/hadoop"
 
 # 集群节点配置
-CLUSTER_NODES=("ms1018.utah.cloudlab.us" "ms1023.utah.cloudlab.us" "ms1033.utah.cloudlab.us")
+CLUSTER_NODES=("ms0805.utah.cloudlab.us" "ms0832.utah.cloudlab.us" "ms0828.utah.cloudlab.us")
 USER="ZhenyuLi"  # 替换为你的用户名
 NAMENODE="${CLUSTER_NODES[0]}"
 

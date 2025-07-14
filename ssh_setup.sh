@@ -2,10 +2,11 @@
 
 # 在这里定义您的服务器列表
 SERVERS=(
-    "ZhenyuLi@ms1018.utah.cloudlab.us"
-    "ZhenyuLi@ms1023.utah.cloudlab.us"
-    "ZhenyuLi@ms1033.utah.cloudlab.us"
-    "ZhenyuLi@ms1022.utah.cloudlab.us"
+    "ZhenyuLi@ms0805.utah.cloudlab.us"
+    "ZhenyuLi@ms0832.utah.cloudlab.us"
+    "ZhenyuLi@ms0828.utah.cloudlab.us"
+    "ZhenyuLi@ms0822.utah.cloudlab.us"
+    "ZhenyuLi@ms0820.utah.cloudlab.us"
 )
 
 # 在每个服务器上生成SSH密钥

@@ -3,10 +3,11 @@
 USER="ZhenyuLi"
 # TODO: Replace the parameter
 HOSTS=(
-  "ms1018.utah.cloudlab.us"
-  "ms1023.utah.cloudlab.us"
-  "ms1033.utah.cloudlab.us"
-  "ms1022.utah.cloudlab.us"
+  "ms0805.utah.cloudlab.us"
+  "ms0832.utah.cloudlab.us"
+  "ms0828.utah.cloudlab.us"
+  "ms0822.utah.cloudlab.us"
+  "ms0820.utah.cloudlab.us"
 )
 # Define the node names as parameters
 # TODO: Replace the parameter
@@ -15,6 +16,7 @@ NODE_NAMES=(
   "node1"
   "node2"
   "node3"
+  "node4"
 )
 SCRIPT_PATH="/opt/hadoop_scripts/reconfigure_hadoop.sh"
 HADOOP_HOME="/opt/hadoop"
