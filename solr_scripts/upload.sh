@@ -5,7 +5,7 @@ LOCAL_SCRIPT="/Users/lizhenyu/IdeaProjects/eval_script/solr_scripts/upload_githu
 RECONFIGURE_SCRIPT="/Users/lizhenyu/IdeaProjects/eval_script/solr_scripts/reconfigure_solr.sh"
 REMOTE_PATH="/opt/"
 REMOTE_SCRIPT="/opt/upload_github.sh"
-SERVERS=("ms1132.utah.cloudlab.us", "ms1101.utah.cloudlab.us")
+SERVERS=("ms1132.utah.cloudlab.us" "ms1101.utah.cloudlab.us")
 USER="ZhenyuLi"
 
 # 颜色输出
