@@ -7,22 +7,25 @@ DEST_DIR="/opt"
 
 # Define server list
 SERVERS=(
-  "ms1018"
-  "ms1023"
-  "ms1033"
-  "ms1022"
+  "ms1132"
+  "ms1101"
+  "ms1108"
 )
 
 ZOOKEEPER_TARGET_DIR="/Users/lizhenyu/Desktop/eval_script/HBASE-25898/zookeeper.tar.gz"
 
-# Copy zookeeper_scripts directory to all servers
+# Start all transfers in background
 for SERVER in "${SERVERS[@]}"; do
-  echo "Copying zookeeper_scripts directory to ${SERVER}..."
-  scp -r "${SOURCE_DIR}" "${USER}@${SERVER}.${DOMAIN}:${DEST_DIR}"
-
-
-  echo "Copying ZooKeeper tar.gz to ${SERVER}..."
-  scp "${ZOOKEEPER_TARGET_DIR}" "${USER}@${SERVER}.${DOMAIN}:/opt/zookeeper_scripts/"
+  (
+    echo "Starting transfer to ${SERVER}..."
+    scp -r "${SOURCE_DIR}" "${USER}@${SERVER}.${DOMAIN}:${DEST_DIR}"
+    echo "Copying ZooKeeper tar.gz to ${SERVER}..."
+    scp "${ZOOKEEPER_TARGET_DIR}" "${USER}@${SERVER}.${DOMAIN}:/opt/zookeeper_scripts/"
+    echo "Completed transfer to ${SERVER}"
+  ) &
 done
+
+# Wait for all background jobs to complete
+wait
 
 echo "All transfers completed!"

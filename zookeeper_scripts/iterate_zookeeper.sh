@@ -3,9 +3,9 @@
 # Define variables
 USER="ZhenyuLi"
 HOSTS=(
-  "ms1018.utah.cloudlab.us"
-  "ms1023.utah.cloudlab.us"
-  "ms1033.utah.cloudlab.us"
+  "ms1132.utah.cloudlab.us"
+  "ms1101.utah.cloudlab.us"
+  "ms1108.utah.cloudlab.us"
 )
 SCRIPT_PATH="/opt/zookeeper_scripts/reconfigure_zookeeper.sh"
 

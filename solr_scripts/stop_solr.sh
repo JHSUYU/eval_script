@@ -43,6 +43,9 @@ stop_and_clean() {
 
     echo "Cleanup completed"
 
+    rm -rf /opt/ShadowDirectory
+    rm -rf /opt/ShadowAppendLog
+
     # Verify remaining files
     echo "Remaining files in /opt/SolrData:"
     ls -la /opt/SolrData/

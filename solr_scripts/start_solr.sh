@@ -14,7 +14,7 @@ INTERNAL_IPS=(
 )
 
 # Add more IPs if you have more nodes
-# For 3 nodes, you would have:
+# For 3 nodes, you would have::wq
 # INTERNAL_IPS=(
 #   "10.10.1.1"
 #   "10.10.1.2"
@@ -164,6 +164,10 @@ for i in "${!HOSTS[@]}"; do
   if [ $? -ne 0 ]; then
     echo -e "${RED}Error starting node ${HOSTS[$i]}. Aborting.${NC}"
     exit 1
+  fi
+  if [ $i -eq 0 ]; then
+    echo "Waiting for first node to establish as leader..."
+    sleep 8  # 给第一个节点足够的时间成为 leader
   fi
 done
 

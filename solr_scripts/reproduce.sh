@@ -75,6 +75,28 @@ for i in {1..5}; do
     --data-binary "$docs" > /dev/null
 done
 
+#BATCH_SIZE=100000  # 减小单批次大小
+#TOTAL_BATCHES=500  # 增加批次数保持总量不变
+#
+#for i in $(seq 1 $TOTAL_BATCHES); do
+#  echo "批次 $i/$TOTAL_BATCHES..."
+#
+#  # 使用printf和管道，避免字符串拼接
+#  {
+#    echo -n '['
+#    for j in $(seq 1 $BATCH_SIZE); do
+#      id=$((i*BATCH_SIZE+j))
+#      [ $j -gt 1 ] && echo -n ','
+#      printf '{"id":"doc_%d","title":"文档%d"}' $id $id
+#    done
+#    echo -n ']'
+#  } | curl -s -X POST -H 'Content-Type: application/json' \
+#    "http://${LEADER_IP}:8983/solr/${COLLECTION}/update?min_rf=1&commit=false" \
+#    --data-binary @- > /dev/null
+#done
+
+curl "http://${LEADER_IP}:8983/solr/${COLLECTION}/update?commit=true"
+
 echo -e "\n=== Step 6: 查看leader文档数 ==="
 LEADER_COUNT=$(curl -s "http://${LEADER_IP}:8983/solr/${LEADER_CORE}/select?q=*:*&rows=0&distrib=false" | \
   jq -r '.response.numFound')

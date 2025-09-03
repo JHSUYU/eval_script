@@ -14,7 +14,7 @@ NC='\033[0m' # No Color
 echo "Starting Git clone/update and build process..."
 echo "================================================"
 
-# 检查Solr目录是否存在
+#检查Solr目录是否存在
 if [ ! -d "${SOLR_DIR}" ]; then
     echo "Solr directory not found. Cloning repository..."
     cd /opt
@@ -36,7 +36,7 @@ else
     echo "✓ Repository updated to latest version"
 fi
 
- 构建Solr
+#构建Solr
 echo "Building Solr..."
 cd ${SOLR_DIR}
 
