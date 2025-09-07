@@ -3,9 +3,11 @@
 # 定义变量
 USER="ZhenyuLi"
 HOSTS=(
-  "ms1328.utah.cloudlab.us"
-  "ms1340.utah.cloudlab.us"
-  "ms1325.utah.cloudlab.us"
+  "ms1205.utah.cloudlab.us"
+  "ms1114.utah.cloudlab.us"
+  "ms1136.utah.cloudlab.us"
+  "ms1116.utah.cloudlab.us"
+  "ms1028.utah.cloudlab.us"
 )
 SCRIPT_PATH="/opt/hbase_scripts/reconfigure_hbase.sh"
 REGIONSERVERS_PATH="/opt/hbase/conf/regionservers"
@@ -13,8 +15,11 @@ HBASE_ENV_PATH="/opt/hbase/conf/hbase-env.sh"
 
 # 定义RegionServers列表（可以自由修改）
 REGION_SERVERS=(
+  "node0"
   "node1"
   "node2"
+  "node3"
+  "node4"
 )
 
 # 定义要添加到hbase-env.sh的配置

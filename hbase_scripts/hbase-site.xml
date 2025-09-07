@@ -1,0 +1,25 @@
+<configuration>
+    <property>
+        <name>hbase.zookeeper.quorum</name>
+        <value>node0,node1,node2</value>
+        <description>Comma separated list of servers in the ZooKeeper ensemble</description>
+    </property>
+
+    <property>
+        <name>hbase.zookeeper.property.clientPort</name>
+        <value>2181</value>
+        <description>The port at which the clients will connect</description>
+    </property>
+
+    <property>
+        <name>hbase.rootdir</name>
+        <value>hdfs://node0:9000/hbase</value>
+        <description>The directory shared by RegionServers</description>
+    </property>
+
+    <property>
+        <name>hbase.cluster.distributed</name>
+        <value>true</value>
+        <description>The mode the cluster will be in</description>
+    </property>
+</configuration>

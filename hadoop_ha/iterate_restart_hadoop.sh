@@ -7,7 +7,7 @@ HDFS_CMD="$HADOOP_HOME/bin/hdfs"
 HADOOP_CMD="$HADOOP_HOME/bin/hadoop"
 
 # 集群节点配置
-CLUSTER_NODES=("ms0932.utah.cloudlab.us" "ms0915.utah.cloudlab.us" "ms0906.utah.cloudlab.us")
+CLUSTER_NODES=("ms1205.utah.cloudlab.us" "ms1114.utah.cloudlab.us" "ms1136.utah.cloudlab.us" "ms1116.utah.cloudlab.us" "ms1028.utah.cloudlab.us")
 USER="ZhenyuLi"  # 替换为你的用户名
 
 # HA 配置

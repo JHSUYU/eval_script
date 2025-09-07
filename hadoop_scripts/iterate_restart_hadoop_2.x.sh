@@ -7,7 +7,7 @@ HDFS_CMD="$HADOOP_HOME/bin/hdfs"
 HADOOP_CMD="$HADOOP_HOME/bin/hadoop"
 
 # 集群节点配置
-CLUSTER_NODES=("ms1018.utah.cloudlab.us" "ms1023.utah.cloudlab.us" "ms1033.utah.cloudlab.us")
+CLUSTER_NODES=("ms1205.utah.cloudlab.us" "ms1114.utah.cloudlab.us" "ms1136.utah.cloudlab.us" "ms1116.utah.cloudlab.us" "ms1028.utah.cloudlab.us")
 USER="ZhenyuLi"  # 替换为你的用户名
 NAMENODE="${CLUSTER_NODES[0]}"
 
@@ -166,7 +166,7 @@ EOF
     echo ""  # 添加空行作为分隔
 done
 
-# 步骤4: 在NameNode上格式化HDFS
+ 步骤4: 在NameNode上格式化HDFS
 echo "正在NameNode上格式化HDFS..."
 echo "使用节点: $NAMENODE"
 

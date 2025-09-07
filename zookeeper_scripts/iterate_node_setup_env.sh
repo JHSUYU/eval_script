@@ -3,10 +3,11 @@
 # 定义变量
 USER="ZhenyuLi"
 HOSTS=(
-  "ms1018.utah.cloudlab.us"
-  "ms1023.utah.cloudlab.us"
-  "ms1033.utah.cloudlab.us"
-  "ms1022.utah.cloudlab.us"
+  "ms1205.utah.cloudlab.us"
+  "ms1114.utah.cloudlab.us"
+  "ms1136.utah.cloudlab.us"
+  "ms1116.utah.cloudlab.us"
+  "ms1028.utah.cloudlab.us"
 )
 SCRIPT_PATH="/opt/zookeeper_scripts/setup_env.sh"
 

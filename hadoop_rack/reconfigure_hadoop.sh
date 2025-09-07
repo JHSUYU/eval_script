@@ -27,6 +27,10 @@ cat > ${OPT}/hadoop/etc/hadoop/core-site.xml << EOF
         <name>hadoop.tmp.dir</name>
         <value>/opt/hadoop/tmp</value>
     </property>
+    <property>
+        <name>net.topology.script.file.name</name>
+        <value>/opt/hadoop_scripts/rack-topology.sh</value>
+    </property>
 </configuration>
 EOF
 
@@ -37,7 +41,7 @@ cat > ${OPT}/hadoop/etc/hadoop/hdfs-site.xml << EOF
 <configuration>
     <property>
         <name>dfs.replication</name>
-        <value>3</value>
+        <value>2</value>
     </property>
     <property>
         <name>dfs.namenode.name.dir</name>

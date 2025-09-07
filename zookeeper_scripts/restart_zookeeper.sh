@@ -3,10 +3,9 @@
 # 定义变量
 USER="ZhenyuLi"
 HOSTS=(
-  "ms1132.utah.cloudlab.us"
-  "ms1101.utah.cloudlab.us"
-
-  "ms1108.utah.cloudlab.us"
+  "ms1205.utah.cloudlab.us"
+  "ms1114.utah.cloudlab.us"
+  "ms1136.utah.cloudlab.us"
 )
 
 # 显示脚本开始信息
