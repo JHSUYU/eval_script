@@ -18,6 +18,7 @@ echo "================================================"
 if [ ! -d "${SOLR_DIR}" ]; then
     echo "Solr directory not found. Cloning repository..."
     cd /opt
+    sudo chmod -R 777 /opt
     git clone ${GIT_REPO}
     echo "✓ Repository cloned successfully"
 else
@@ -39,6 +40,7 @@ fi
 #构建Solr
 echo "Building Solr..."
 cd ${SOLR_DIR}
+#ant ivy-bootstrap
 
 # 编译主项目
 echo "Running ant compile..."

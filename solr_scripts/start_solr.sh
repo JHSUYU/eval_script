@@ -3,8 +3,8 @@
 # Define variables
 USER="ZhenyuLi"
 HOSTS=(
-  "ms1132.utah.cloudlab.us"
-  "ms1101.utah.cloudlab.us"
+  "clnode311.clemson.cloudlab.us"
+  "clnode314.clemson.cloudlab.us"
 )
 
 # Internal IP addresses (corresponding to HOSTS array order)
@@ -12,14 +12,6 @@ INTERNAL_IPS=(
   "10.10.1.1"
   "10.10.1.2"
 )
-
-# Add more IPs if you have more nodes
-# For 3 nodes, you would have::wq
-# INTERNAL_IPS=(
-#   "10.10.1.1"
-#   "10.10.1.2"
-#   "10.10.1.3"
-# )
 
 # Solr configuration
 SOLR_BIN="/opt/Solr/solr/bin/solr"
@@ -101,12 +93,11 @@ EOF
 
   if [ $? -eq 0 ]; then
     echo -e "${GREEN}✓ Successfully started Solr on $host${NC}"
+    return 0
   else
     echo -e "${RED}✗ Failed to start Solr on $host${NC}"
     return 1
   fi
-
-  echo ""
 }
 
 # Function to upload configuration (only on first node)
@@ -146,32 +137,57 @@ EOF
 
   if [ $? -eq 0 ]; then
     echo -e "${GREEN}✓ Configuration uploaded successfully${NC}"
+    return 0
   else
     echo -e "${RED}✗ Failed to upload configuration${NC}"
     return 1
   fi
-
-  echo ""
 }
 
 # Main execution
-echo -e "${GREEN}Phase 1: Starting all Solr nodes${NC}"
+echo -e "${GREEN}Phase 1: Starting all Solr nodes in parallel${NC}"
 echo ""
 
-# Start Solr on each node
+# Array to store PIDs
+declare -a PIDS=()
+
+# Start all Solr nodes in parallel
 for i in "${!HOSTS[@]}"; do
-  start_solr_node "${HOSTS[$i]}" "${INTERNAL_IPS[$i]}" "$i"
-  if [ $? -ne 0 ]; then
-    echo -e "${RED}Error starting node ${HOSTS[$i]}. Aborting.${NC}"
-    exit 1
-  fi
-  if [ $i -eq 0 ]; then
-    echo "Waiting for first node to establish as leader..."
-    sleep 8  # 给第一个节点足够的时间成为 leader
+  {
+    start_solr_node "${HOSTS[$i]}" "${INTERNAL_IPS[$i]}" "$i"
+  } &
+  PIDS+=($!)
+  echo -e "${YELLOW}Started background process for ${HOSTS[$i]} (PID: ${PIDS[-1]})${NC}"
+done
+
+# Wait for all nodes to start
+echo -e "${YELLOW}Waiting for all nodes to start...${NC}"
+FAILED_NODES=()
+SUCCESS_NODES=()
+
+for i in "${!HOSTS[@]}"; do
+  wait "${PIDS[$i]}"
+  if [ $? -eq 0 ]; then
+    SUCCESS_NODES+=("${HOSTS[$i]}")
+  else
+    FAILED_NODES+=("${HOSTS[$i]}")
   fi
 done
 
-# Wait a bit for all nodes to stabilize
+# Check if any nodes failed
+if [ ${#FAILED_NODES[@]} -gt 0 ]; then
+  echo -e "${RED}Failed to start the following nodes:${NC}"
+  for node in "${FAILED_NODES[@]}"; do
+    echo -e "${RED}  - $node${NC}"
+  done
+  echo -e "${RED}Aborting. Please check the failed nodes.${NC}"
+  exit 1
+fi
+
+echo -e "${GREEN}All nodes started successfully!${NC}"
+echo ""
+
+# Wait for cluster to stabilize
 echo "Waiting for cluster to stabilize..."
 sleep 15
 
@@ -180,13 +196,29 @@ echo -e "${GREEN}Phase 2: Uploading configuration${NC}"
 echo ""
 upload_config "${HOSTS[0]}"
 
-# Final status check
+if [ $? -ne 0 ]; then
+  echo -e "${RED}Failed to upload configuration. Please check and retry.${NC}"
+  exit 1
+fi
+
+# Final status check - also in parallel
+echo ""
 echo -e "${GREEN}======================================${NC}"
 echo -e "${GREEN}Final Status Check${NC}"
 echo -e "${GREEN}======================================${NC}"
 
+# Parallel status check
 for host in "${HOSTS[@]}"; do
-  echo -e "${YELLOW}Status of $host:${NC}"
-  ssh "$USER@$host" "$SOLR_BIN status" 2>/dev/null
-  echo ""
+  {
+    echo -e "${YELLOW}Status of $host:${NC}"
+    ssh "$USER@$host" "$SOLR_BIN status" 2>/dev/null
+    echo ""
+  } &
 done
+
+# Wait for all status checks to complete
+wait
+
+echo -e "${GREEN}======================================${NC}"
+echo -e "${GREEN}Solr cluster startup complete!${NC}"
+echo -e "${GREEN}======================================${NC}"

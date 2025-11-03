@@ -2,10 +2,33 @@
 
 # 配置变量
 USER="ZhenyuLi"
-HOSTS=("ms1132.utah.cloudlab.us" "ms1101.utah.cloudlab.us")
+HOSTS=("clnode311.clemson.cloudlab.us" "clnode314.clemson.cloudlab.us")
 IPS=("10.10.1.1" "10.10.1.2")
 SOLR_BIN="/opt/Solr/solr/bin/solr"
 COLLECTION="mycollection"
+
+# 检查并安装 jq (Ubuntu)
+check_and_install_jq() {
+    if ! command -v jq &> /dev/null; then
+        echo "jq 未安装，正在为 Ubuntu 系统安装..."
+        sudo apt-get update
+        sudo apt-get install -y jq
+
+        # 验证安装
+        if command -v jq &> /dev/null; then
+            echo "✅ jq 安装成功，版本: $(jq --version)"
+        else
+            echo "❌ jq 安装失败，请手动运行: sudo apt-get install jq"
+            exit 1
+        fi
+    else
+        echo "✅ jq 已安装，版本: $(jq --version)"
+    fi
+}
+
+# 在脚本开始时检查 jq
+echo "=== 检查依赖项 ==="
+check_and_install_jq
 
 echo "=== Step 1: 创建collection (两个节点都活着) ==="
 curl -s "http://${IPS[0]}:8983/solr/admin/collections?action=CREATE&name=${COLLECTION}&numShards=1&replicationFactor=2&collection.configName=myconfig"

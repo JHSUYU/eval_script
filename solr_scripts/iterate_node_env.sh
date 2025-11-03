@@ -3,8 +3,8 @@
 # Define variables
 USER="ZhenyuLi"
 HOSTS=(
-  "ms1132.utah.cloudlab.us"
-  "ms1101.utah.cloudlab.us"
+  "clnode311.clemson.cloudlab.us"
+  "clnode314.clemson.cloudlab.us"
 )
 SCRIPT_PATH="/opt/reconfigure_solr.sh"
 
